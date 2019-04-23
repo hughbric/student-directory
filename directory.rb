@@ -1,39 +1,47 @@
-
-def print_header
-  puts "The students of Villains Academy"
-  puts "-------------"
-end
-
-def print(students)
-  students.each_with_index { |student, index| 
-  puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
-  }
-end
-
-def print_footer(students)
-  puts "Overall, we have #{students.count} great students"
-end
-
-def input_students
-  puts "Please enter the names of the students"
-  puts "To finish, hit return twice"
+class Directory
+  attr_reader :students
   
-  students = []
-  name = gets.chomp
+  def initialize
+    @students = []
+  end
   
-  while !name.empty? do
-
-    students << {name: name, cohort: :april}
-    puts "Now we have #{students.count} students"
+  def print_header
+    puts "The students of Villains Academy"
+    puts "-------------"
+  end
+  
+  def print_footer
+    puts "Overall, we have #{students.count} great students"
+  end
+  
+  def print
+    students.each_with_index { |student, index| 
+    puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
+    }
+  end
+  
+  def input_students
+    puts "Please enter the names of the students"
+    puts "To finish, hit return twice"
+    
 
     name = gets.chomp
+    
+    while !name.empty? do
+  
+      students << {name: name, cohort: :april}
+      puts "Now we have #{students.count} students"
+  
+      name = gets.chomp
+    end
+  
+    students
   end
-
-  students
 end
 
-students = input_students
+students = Directory.new
 
-print_header
-print(students)
-print_footer(students)
+students.input_students
+students.print_header
+students.print
+students.print_footer
