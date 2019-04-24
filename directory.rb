@@ -24,7 +24,7 @@ class Directory
   end
   
   def input_students
-    puts "Once finished, hit return twice"
+    puts "Enter a students credentials; once finished, hit return"
     
     loop do
       puts "Please enter the name of a new student:"
@@ -41,6 +41,12 @@ class Directory
       age = gets.chomp
       
       assign_values(name, cohort, place, age)
+      
+      if students.length <= 1
+        puts "We now have #{students.length} student"
+      else
+        puts "Now we have #{students.length} students"  
+      end
     end
   end
   
@@ -50,35 +56,38 @@ class Directory
     age = "48"          if age.empty?
     
     students << { name: name, cohort: cohort.intern, place: place, age: age }
-
-    if students.length <= 1
-      puts "We now have #{students.length} student"
-    else
-      puts "Now we have #{students.length} students"  
-    end
   end
   
   def interactive_menu
     loop do
-      puts "1. Input new students"
-      puts "2. Show our current students"
-      puts "9. Exit"
-      
-      selection = gets.chomp
-      
-      case selection
-      when "1"
-        input_students
-      when "2"
-        print_header
-        print_students
-      when "9"
-        print_footer
-        break
-      else
-        puts "I don't know what you meant, try again"
-      end
+      print_menu
+      process(gets.chomp)
     end
+  end
+  
+  def print_menu
+    puts "1. Input new students"
+    puts "2. Show our current students"
+    puts "9. Exit"
+  end
+  
+  def process(selection)
+    case selection
+    when "1"
+      input_students
+    when "2"
+      show_students
+    when "9"
+      exit
+    else
+      puts "I don't know what you meant, try again"
+    end
+  end
+  
+  def show_students
+    print_header
+    print_students
+    print_footer
   end
 end
 
