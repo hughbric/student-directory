@@ -11,31 +11,44 @@ class Directory
   end
   
   def print_footer
-    puts "Overall, we have #{students.count} great students"
+    puts "Overall, we have #{students.length} great students"
   end
   
-  def print
-    students.each_with_index { |student, index| 
-    puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
-    }
+  def print_students
+    if students.length > 0
+      students.each_with_index do |student, index|
+        print "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
+        puts " | Age: #{student[:age]}, #{student[:place]}"
+      end
+    end
   end
   
   def input_students
-    puts "Please enter the names of the students"
-    puts "To finish, hit return twice"
+    puts "Once finished, hit return twice"
     
-
-    name = gets.chomp
-    
-    while !name.empty? do
-  
-      students << {name: name, cohort: :april}
-      puts "Now we have #{students.count} students"
-  
+    loop do
+      puts "Please enter the name of a new student:"
       name = gets.chomp
+      break if name.empty?
+      
+      puts "Please enter their cohort:"
+      cohort = gets.chomp
+      cohort = "April" if cohort.empty?
+      
+      puts "Their place of birth:"
+      place = gets.chomp
+      
+      puts "Their age:"
+      age = gets.chomp
+      
+      students << { name: name, cohort: cohort.to_s, place: place, age: age }
+
+      if students.length <= 1
+        puts "We now have #{students.length} student"
+      else
+        puts "Now we have #{students.length} students"
+      end
     end
-  
-    students
   end
 end
 
@@ -43,5 +56,5 @@ students = Directory.new
 
 students.input_students
 students.print_header
-students.print
+students.print_students
 students.print_footer
