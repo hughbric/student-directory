@@ -24,7 +24,7 @@ class Directory
   end
   
   def input_students
-    puts "Enter a students credentials; once finished, hit return"
+    puts "Enter a student's credentials; once finished, hit return"
     
     loop do
       puts "Please enter the name of a new student:"
@@ -50,7 +50,7 @@ class Directory
     end
   end
   
-  def assign_values(name, cohort, place, age)
+  def assign_values(name, cohort, place = '', age = '')
     cohort = "April"    if cohort.empty?
     place = "La Mancha" if place.empty?
     age = "48"          if age.empty?
@@ -68,6 +68,8 @@ class Directory
   def print_menu
     puts "1. Input new students"
     puts "2. Show our current students"
+    puts "3. Save the list to students.csv"
+    puts "4. Load the list from students.csv"
     puts "9. Exit"
   end
   
@@ -77,6 +79,10 @@ class Directory
       input_students
     when "2"
       show_students
+    when "3"
+      save_students
+    when "4"
+      load_students
     when "9"
       exit
     else
@@ -88,6 +94,29 @@ class Directory
     print_header
     print_students
     print_footer
+  end
+  
+  def save_students
+    file = File.open("students.csv", "a")
+
+    students.each do |student|
+      student_data = [student[:name], student[:cohort]]
+      p student_data
+      csv_line = student_data.join(",")
+      file.puts csv_line
+      p student
+    end
+    file.close
+  end
+  
+  def load_students
+    file = File.open("students.csv", "r")
+    
+    file.readlines.each do |line|
+    name, cohort = line.chomp.split(',')
+      assign_values(name, cohort.to_sym)
+    end
+    file.close
   end
 end
 
